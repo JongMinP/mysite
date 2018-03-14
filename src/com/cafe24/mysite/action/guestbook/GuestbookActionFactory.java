@@ -11,9 +11,7 @@ public class GuestbookActionFactory extends AbstractActionFactory {
 
 		if ("insert".equals(actionName)) {
 			action = new AddAction();
-
 		} else if ("delete".equals(actionName)) {
-			System.out.println("D");
 			action = new DeleteAction();
 		} else if ("deleteform".equals(actionName)) {
 			action = new DeleteFormAction();

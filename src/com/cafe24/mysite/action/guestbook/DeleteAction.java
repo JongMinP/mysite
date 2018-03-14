@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.cafe24.mvc.action.Action;
 import com.cafe24.mvc.util.WebUtil;
 import com.cafe24.mysite.dao.GuestBookDao;
-import com.cafe24.mysite.vo.GuestBookVo;
 
 public class DeleteAction implements Action {
 
@@ -18,16 +17,14 @@ public class DeleteAction implements Action {
 
 		String password = request.getParameter("password");
 		int no = Integer.parseInt(request.getParameter("no"));
-		
-		System.out.println(password);
-		System.out.println(no);
 
 		GuestBookDao dao = new GuestBookDao();
-		GuestBookVo vo = dao.getGusetBook(no);
 
-		if (password.equals(vo.getPassword())) {
+
+		if (dao.checkGusetBook(no, password)) {
 			dao.delete(no);
 		}
+
 		WebUtil.redirect(request, response, "/mysite/guestbook");
 	}
 

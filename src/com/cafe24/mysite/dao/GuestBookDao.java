@@ -60,7 +60,7 @@ public class GuestBookDao {
 		try {
 			conn = ConnectionFactroy.getInstance().createConnection();
 			sql.append("insert into guestbook ");
-			sql.append("values(null,?,?,?,now()) ");
+			sql.append("values(null,?,password(?),?,now()) ");
 
 			pstmt = conn.prepareStatement(sql.toString());
 
@@ -111,6 +111,39 @@ public class GuestBookDao {
 
 	}
 
+	public boolean checkGusetBook(int no, String password) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sql = new StringBuilder();
+		boolean result = false;
+
+		try {
+			conn = ConnectionFactroy.getInstance().createConnection();
+
+			sql.append("select password, password(?) ");
+			sql.append("from guestbook ");
+			sql.append("where no = ? ");
+			pstmt = conn.prepareStatement(sql.toString());
+
+			pstmt.setString(1, password);
+			pstmt.setInt(2, no);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				result = rs.getString(1).equals(rs.getString(2)) ? true : false;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			AutoClose.closeResource(rs, pstmt, conn);
+		}
+
+		return result;
+	}
+
 	public GuestBookVo getGusetBook(int no) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -121,7 +154,7 @@ public class GuestBookDao {
 		try {
 			conn = ConnectionFactroy.getInstance().createConnection();
 
-			sql.append("select no,name,password,content, date_format(reg_date,'%Y-%m-%d') as reg_date ");
+			sql.append("select no,name,password,content, date_format(reg_date,'%Y-%m-%d') as reg_date , password ");
 			sql.append("from guestbook ");
 			sql.append("where no = ? ");
 			pstmt = conn.prepareStatement(sql.toString());
