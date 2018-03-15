@@ -12,11 +12,32 @@ public class UserActionFactory extends AbstractActionFactory {
 
 		if ("joinform".equals(actionName)) {
 			action = new JoinFormAction();
+
 		} else if ("loginform".equals(actionName)) {
 			action = new LoginFormAction();
-		}
 
-		else { // 메인 action으로 포워딩
+		} else if ("joinsuccess".equals(actionName)) {
+			action = new JoinSuccessAction();
+
+		} else if ("join".equals(actionName)) {
+			action = new JoinAction();
+
+		} else if ("login".equals(actionName)) {
+			action = new LoginAction();
+
+		} else if ("logout".equals(actionName)) {
+			action = new LoginoutAction();
+
+		} else if ("updateform".equals(actionName)) {
+			action = new UpdateFormAction();
+
+		} else if ("update".equals(actionName)) {
+			action = new UpdateAction();
+
+		} else if ("updatesuccess".equals(actionName)) {
+			action = new UpdateSuccessAction();
+
+		}else { // 메인 action으로 포워딩
 			action = new IndexAction();
 		}
 
