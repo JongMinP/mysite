@@ -9,6 +9,18 @@ public class UserVo {
 	private String gender;
 	private String joinDate;
 
+	public UserVo() {
+	}
+
+	public UserVo(Long no) {
+		this.no = no;
+	}
+
+	public UserVo(Long no, String name) {
+		this.no = no;
+		this.name = name;
+	}
+
 	public Long getNo() {
 		return no;
 	}
