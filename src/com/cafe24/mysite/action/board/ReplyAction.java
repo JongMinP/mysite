@@ -38,7 +38,10 @@ public class ReplyAction implements Action {
 		bvo.setDepth(vo.getDepth() + 1);
 		bvo.setUser((UserVo) session.getAttribute("authUser"));
 
+		dao.updateOrder(vo.getGroupNo(), vo.getOrderNo()+1); // 자기보다 큰애들 업데이트
+		
 		dao.replyWrite(bvo);
+		
 
 		WebUtil.redirect(request, response, "/mysite/board");
 

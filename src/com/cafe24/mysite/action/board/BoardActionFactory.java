@@ -25,6 +25,12 @@ public class BoardActionFactory extends AbstractActionFactory {
 			action = new ReplyFormAction();
 		} else if ("reply".equals(actionName)) {
 			action = new ReplyAction();
+		} else if ("search".equals(actionName)) {
+			action = new SearchAction();
+		} else if ("pager".equals(actionName)) {
+			action = new PagerAction();
+		} else if ("arrow".equals(actionName)) {
+			action = new ArrowAction();
 		} else {
 			action = new ListAction();
 		}

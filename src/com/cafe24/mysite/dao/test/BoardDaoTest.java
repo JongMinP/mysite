@@ -9,8 +9,28 @@ import com.cafe24.mysite.vo.UserVo;
 public class BoardDaoTest {
 
 	public static void main(String[] args) {
-//		insert();
-		getList();
+		// insert();
+		// getList();
+		// getListPage();
+		getCount();
+	}
+
+	public static void getCount() {
+
+		int result = new BoardDao().getTotalCount();
+		
+		System.out.println(result);
+	}
+
+	public static void getListPage() {
+
+		BoardDao dao = new BoardDao();
+
+		List<BoardVo> boards = dao.getListPage(0, 5);
+
+		for (BoardVo vo : boards) {
+			System.out.println(vo);
+		}
 
 	}
 
@@ -28,19 +48,19 @@ public class BoardDaoTest {
 		vo.setCount(0L); // 디폴트 0을 주자
 		vo.setFile("파일1");
 		vo.setUser(new UserVo(1L));
-		
-//		System.out.println(vo);
+
+		// System.out.println(vo);
 
 		dao.insert(vo);
 
 	}
 
 	public static void getList() {
-		
+
 		BoardDao dao = new BoardDao();
-		
+
 		List<BoardVo> list = dao.getList();
-		
+
 		for (BoardVo vo : list) {
 			System.out.println(vo);
 		}

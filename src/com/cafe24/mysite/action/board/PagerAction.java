@@ -13,26 +13,30 @@ import com.cafe24.mysite.dao.BoardDao;
 import com.cafe24.mysite.vo.BoardVo;
 import com.cafe24.mysite.vo.Pager;
 
-public class ListAction implements Action {
+public class PagerAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		int pageStart = Integer.parseInt(request.getParameter("pageStart"));
+//		int pageEnd = Integer.parseInt(request.getParameter("pageEnd"));
+		int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		int totalCount = Integer.parseInt(request.getParameter("totalCount"));
+
 		BoardDao dao = new BoardDao();
-		
-		List<BoardVo> list = dao.getListPage(0, 5);
-		
+
+		List<BoardVo> list = dao.getListPage(pageStart, 5);
+
 		request.setAttribute("boards", list);
-		
-		int totalCount = dao.getTotalCount();
-		
+
 		Pager pager = new Pager();
+
+		pager.setCurrentPage(currentPage);
 		pager.setTotalCount(totalCount);
-		
+
 		request.setAttribute("pager", pager);
 		
-		
 		WebUtil.foward(request, response, "/WEB-INF/views/board/list.jsp");
+
 	}
 
 }

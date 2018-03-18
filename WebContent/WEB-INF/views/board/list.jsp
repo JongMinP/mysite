@@ -16,9 +16,10 @@
 		<c:import url="/WEB-INF/views/includes/header.jsp" />
 		<div id="content">
 			<div id="board">
-				<form id="search_form" action="" method="post">
-					<input type="text" id="kwd" name="kwd" value=""> <input
-						type="submit" value="찾기">
+				<form id="search_form" action="/mysite/board" method="post">
+					<input type="hidden" name="a" value="search" /> <input type="text"
+						id="kwd" name="kwd" value=""> <input type="submit"
+						value="찾기">
 				</form>
 
 
@@ -31,52 +32,71 @@
 						<th>작성일</th>
 						<th>&nbsp;</th>
 					</tr>
-					<c:set var="count" value="${fn:length(boards) }" /> 
+					<c:set var="count" value="${fn:length(boards) }" />
 					<c:forEach items="${boards }" var="board" varStatus="status">
+
 						<tr>
 							<td>${count - status.index}</td>
-							<td><a href="/mysite/board?a=detail&no=${board.no }">${board.title}</a></td>
+							<td style="text-align:left; padding-left:${20*board.depth}px">
+								<c:if test="${board.depth > 0 }">
+									<img src="/mysite/assets/images/reply.png" />
+								</c:if> <a href="/mysite/board?a=detail&no=${board.no }">${board.title}</a>
+							</td>
 							<td>${board.user.name }</td>
 							<td>${board.count }</td>
 							<td>${board.regDate }</td>
-							<td>
-								<c:if test="${board.user.no eq authUser.no }">
+							<td><c:if test="${board.user.no eq authUser.no }">
 									<a href="/mysite/board?a=delete&no=${board.no }" class="del">삭제</a>
-								</c:if>
-							</td>
+								</c:if></td>
 						</tr>
 					</c:forEach>
 
 
-<!-- 					<tr> -->
-<!-- 						<td>2</td> -->
-<!-- 												20*vo.depth -->
-<%-- 						<td style="text-align:left; padding-left:${20*1}px"><img --%>
-<!-- 							src="/mysite/assets/images/reply.png" /> <a href="">두 번째 -->
-<!-- 								글입니다.</a></td> -->
-<!-- 						<td>안대혁</td> -->
-<!-- 						<td>3</td> -->
-<!-- 						<td>2015-10-02 12:04:12</td> -->
-<!-- 						<td><a href="" class="del">삭제</a></td> -->
-<!-- 					</tr> -->
-<!-- 					<tr> -->
-<!-- 						<td>1</td> -->
-<!-- 						<td><a href="">첫 번째 글입니다.</a></td> -->
-<!-- 						<td>안대혁</td> -->
-<!-- 						<td>3</td> -->
-<!-- 						<td>2015-09-25 07:24:32</td> -->
-<!-- 						<td><a href="" class="del">삭제</a></td> -->
-<!-- 					</tr> -->
 				</table>
 				<div class="pager">
 					<ul>
-						<li><a href="">◀</a></li>
-						<li><a href="">1</a></li>
-						<li><a href="">2</a></li>
-						<li class="selected">3</li>
-						<li><a href="">4</a></li>
-						<li>5</li>
-						<li><a href="">▶</a></li>
+						
+						<c:choose>
+						<c:when test="${pager.prev }">
+							<li style="color: black;"><a href="/mysite/board?a=arrow&page=${pager.page - 5 }">◀</a></li>
+						</c:when>
+						<c:otherwise>
+							<li style="color: #EAEAEA;">◀</li>
+						</c:otherwise>
+						</c:choose>
+						
+						<c:forEach begin="${pager.pageStart -1 }" end="${pager.pageEnd - 1 }" step="1" var="i" varStatus="status">
+						<c:set var="pageCount" value="${4 - status.count }" />
+						<c:choose>
+						<c:when test="${pager.currentPage eq i+1 }">
+							<li class ="selected" ><a style="color: red;" href="/mysite/board?a=pager&pageStart=${pager.pageStart + 5 *i -1 }&currentPage=${i+1}
+						&totalCount=${pager.totalCount}">${i +1 }</a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="/mysite/board?a=pager&pageStart=${pager.pageStart + 5 *i -1  }&currentPage=${i+1}
+						&totalCount=${pager.totalCount}">${i+1}</a></li>
+						</c:otherwise>
+						</c:choose>
+						</c:forEach>
+						
+						<c:forEach begin ="${pager.pageEnd }" step="1" end="${pager.pageEnd + pageCount }" var = "j">
+							<li>${j+1}</li>
+						</c:forEach>
+						
+						
+<%-- 						<li><a href="/mysite/board?a=pager&">${pager.pageStart+1 }</a></li> --%>
+<%-- 						<li class="selected">${pager.pageStar + 2 }</li> --%>
+<%-- 						<li><a href="/mysite/board?a=pager&">${pager.pageStart + 3}</a></li> --%>
+<%-- 						<li>${pager.pageStart + 5 }</li> --%>
+						
+						<c:choose>
+						<c:when test="${pager.next }">
+							<li style="color: black;"><a href="/mysite/board?a=arrow&page=${pager.page + 1 }">▶</a></li>
+						</c:when>
+						<c:otherwise>
+							<li style="color: #EAEAEA;">▶</li>
+						</c:otherwise>
+						</c:choose>
 					</ul>
 				</div>
 				<div class="bottom">
