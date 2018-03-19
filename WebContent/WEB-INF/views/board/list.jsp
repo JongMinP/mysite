@@ -36,7 +36,7 @@
 					<c:forEach items="${boards }" var="board" varStatus="status">
 
 						<tr>
-							<td>${count - status.index}</td>
+							<td>${pager.indexCount - status.index}</td>
 							<td style="text-align:left; padding-left:${20*board.depth}px">
 								<c:if test="${board.depth > 0 }">
 									<img src="/mysite/assets/images/reply.png" />
@@ -58,7 +58,7 @@
 						
 						<c:choose>
 						<c:when test="${pager.prev }">
-							<li style="color: black;"><a href="/mysite/board?a=arrow&page=${pager.page - 5 }">◀</a></li>
+							<li style="color: black;"><a href="/mysite/board?a=arrow&page=${pager.page - 1 }&indexCount=${pager.indexCount + 5*10}&kwd=${kwd}">◀</a></li>
 						</c:when>
 						<c:otherwise>
 							<li style="color: #EAEAEA;">◀</li>
@@ -66,15 +66,16 @@
 						</c:choose>
 						
 						<c:forEach begin="${pager.pageStart -1 }" end="${pager.pageEnd - 1 }" step="1" var="i" varStatus="status">
+						
 						<c:set var="pageCount" value="${4 - status.count }" />
 						<c:choose>
 						<c:when test="${pager.currentPage eq i+1 }">
-							<li class ="selected" ><a style="color: red;" href="/mysite/board?a=pager&pageStart=${pager.pageStart + 5 *i -1 }&currentPage=${i+1}
-						&totalCount=${pager.totalCount}">${i +1 }</a></li>
+							<li class ="selected" ><a style="color: red;" href="/mysite/board?a=pager&pageStart=${10 *i}
+							&currentPage=${i+1}&page=${pager.page}&kwd=${kwd}&totalCount=${pager.totalCount}&indexCount=${pager.totalCount - 10*i}">${i +1 }</a></li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="/mysite/board?a=pager&pageStart=${pager.pageStart + 5 *i -1  }&currentPage=${i+1}
-						&totalCount=${pager.totalCount}">${i+1}</a></li>
+							<li><a href="/mysite/board?a=pager&pageStart=${10 * i }&currentPage=${i+1}&page=${pager.page}
+							&kwd=${kwd}&totalCount=${pager.totalCount}&indexCount=${pager.totalCount - 10*i}">${i+1}</a></li>
 						</c:otherwise>
 						</c:choose>
 						</c:forEach>
@@ -84,14 +85,10 @@
 						</c:forEach>
 						
 						
-<%-- 						<li><a href="/mysite/board?a=pager&">${pager.pageStart+1 }</a></li> --%>
-<%-- 						<li class="selected">${pager.pageStar + 2 }</li> --%>
-<%-- 						<li><a href="/mysite/board?a=pager&">${pager.pageStart + 3}</a></li> --%>
-<%-- 						<li>${pager.pageStart + 5 }</li> --%>
 						
 						<c:choose>
 						<c:when test="${pager.next }">
-							<li style="color: black;"><a href="/mysite/board?a=arrow&page=${pager.page + 1 }">▶</a></li>
+							<li style="color: black;"><a href="/mysite/board?a=arrow&page=${pager.page + 1 }&indexCount=${pager.totalCount - 5*10}&kwd=${kwd}">▶</a></li>
 						</c:when>
 						<c:otherwise>
 							<li style="color: #EAEAEA;">▶</li>

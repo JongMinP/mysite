@@ -8,28 +8,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.cafe24.mvc.action.Action;
 import com.cafe24.mvc.util.WebUtil;
-import com.cafe24.mysite.dao.BoardDao;
-import com.cafe24.mysite.vo.BoardVo;
+import com.cafe24.mysite.dao.CommentDao;
 
-public class DetailAction implements Action {
+public class CommentDeleteAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		String no = request.getParameter("no");
+		String boardNo = request.getParameter("boardNo");
 
-		BoardDao dao = new BoardDao();
+		new CommentDao().delete(Integer.parseInt(no));
 
-		BoardVo vo = dao.getBoard(Integer.parseInt(no));
-
-		vo.setCount(vo.getCount() + 1);
-
-		dao.update(vo);
-
-		request.setAttribute("board", vo);
-
-		WebUtil.foward(request, response, "/WEB-INF/views/board/view.jsp");
-
+		WebUtil.redirect(request, response, "/mysite/board?a=detail&no=" + boardNo);
 	}
 
 }

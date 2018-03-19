@@ -20,7 +20,7 @@ public class ListAction implements Action {
 		
 		BoardDao dao = new BoardDao();
 		
-		List<BoardVo> list = dao.getListPage(0, 5);
+		List<BoardVo> list = dao.getListPage(0, 10);
 		
 		request.setAttribute("boards", list);
 		
@@ -28,6 +28,7 @@ public class ListAction implements Action {
 		
 		Pager pager = new Pager();
 		pager.setTotalCount(totalCount);
+		pager.setIndexCount(totalCount);
 		
 		request.setAttribute("pager", pager);
 		

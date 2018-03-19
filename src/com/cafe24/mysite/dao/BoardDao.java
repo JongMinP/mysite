@@ -42,6 +42,40 @@ public class BoardDao {
 
 		return result;
 	}
+	
+	public int getTotalCount(String kwd) {
+		int result = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sql = new StringBuilder();
+
+		try {
+			conn = ConnectionFactroy.getInstance().createConnection();
+
+			sql.append("select count(*) ");
+			sql.append("from board ");
+			sql.append("where title LIKE ? or content LIKE ?  ");
+			pstmt = conn.prepareStatement(sql.toString());
+
+			pstmt.setString(1, "%" + kwd + "%");
+			pstmt.setString(2, "%" + kwd + "%");
+			
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				result = rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			AutoClose.closeResource(rs, pstmt, conn);
+		}
+
+		return result;
+	}
+	
 
 	public List<BoardVo> getList() {
 		List<BoardVo> list = new ArrayList<>();
@@ -136,7 +170,7 @@ public class BoardDao {
 		return list;
 	}
 
-	public List<BoardVo> getListSearch(String title, String content) {
+	public List<BoardVo> getListSearch(String kwd, int startPage,int pageNum) {
 		List<BoardVo> list = new ArrayList<>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -149,13 +183,16 @@ public class BoardDao {
 			sql.append("select b.no,title,content,group_no,order_no,depth,count,file, ");
 			sql.append("date_format(b.reg_date,'%Y-%m-%d') as reg_date , user_no, u.name ");
 			sql.append("from board b , users u ");
-			sql.append("where b.user_no = u.no and title LIKE ?  or content LIKE   ? ");
+			sql.append("where b.user_no = u.no and (b.title LIKE ?  or b.content LIKE   ?) ");
 			sql.append("order by b.group_no desc , b.order_no asc ");
+			sql.append("LIMIT ? , ? ");
 			pstmt = conn.prepareStatement(sql.toString());
 
-			pstmt.setString(1, "%" + title + "%");
-			pstmt.setString(2, "%" + content + "%");
-
+			pstmt.setString(1, "%" + kwd + "%");
+			pstmt.setString(2, "%" + kwd + "%");
+			pstmt.setInt(3, startPage);
+			pstmt.setInt(4, pageNum);
+			
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -349,6 +386,7 @@ public class BoardDao {
 				vo.setFile(rs.getString(8));
 				vo.setRegDate(rs.getString(9));
 				vo.setUser(new UserVo(rs.getLong(10), rs.getString(11)));
+				vo.setComments(new CommentDao().getList(rs.getLong(1)));
 			}
 
 		} catch (SQLException e) {

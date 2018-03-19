@@ -18,21 +18,31 @@ public class PagerAction implements Action {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int pageStart = Integer.parseInt(request.getParameter("pageStart"));
-//		int pageEnd = Integer.parseInt(request.getParameter("pageEnd"));
 		int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		int page = Integer.parseInt(request.getParameter("page"));
 		int totalCount = Integer.parseInt(request.getParameter("totalCount"));
-
+		String kwd = request.getParameter("kwd");
+		String indexCount = request.getParameter("indexCount");
+		
 		BoardDao dao = new BoardDao();
 
-		List<BoardVo> list = dao.getListPage(pageStart, 5);
+		if(kwd == null) {
+			kwd = "";
+		}
+		
+//		List<BoardVo> list = dao.getListPage(pageStart, 10);
+		List<BoardVo> list = dao.getListSearch(kwd, pageStart, 10);
 
 		request.setAttribute("boards", list);
 
 		Pager pager = new Pager();
-
+		
+		pager.setPage(page);
 		pager.setCurrentPage(currentPage);
 		pager.setTotalCount(totalCount);
+		pager.setIndexCount(Integer.parseInt(indexCount));
 
+		request.setAttribute("kwd", kwd);
 		request.setAttribute("pager", pager);
 		
 		WebUtil.foward(request, response, "/WEB-INF/views/board/list.jsp");

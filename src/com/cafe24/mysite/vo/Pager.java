@@ -13,10 +13,12 @@ public class Pager {
 	private int currentPage;
 
 	private int totalCount;
+	
+	private int indexCount; // 앞 번호
 
 	public Pager() {
 		this.page = 1;
-		this.pageNum = 5;
+		this.pageNum = 10;
 		this.pageStart = 1;
 		this.pageEnd = 5;
 		this.prev = false;
@@ -69,11 +71,13 @@ public class Pager {
 	}
 
 	public int getPageEnd() {
-		
-		if(totalCount < pageEnd * 5) {
-		   pageEnd= (int)(Math.ceil(totalCount / 5.0 )); 
+
+		if (totalCount < pageEnd * 10) {
+			pageEnd = (int) (Math.ceil(totalCount / 10.0));
+			if (pageEnd == 0)
+				pageEnd = 1;
 		}
-		
+
 		return pageEnd;
 	}
 
@@ -95,7 +99,7 @@ public class Pager {
 
 	public boolean isNext() {
 
-		if (pageEnd * 5 >= totalCount) {
+		if (pageEnd * 10 >= totalCount) {
 			return false;
 		}
 
@@ -112,6 +116,21 @@ public class Pager {
 
 	public void setTotalCount(int totalCount) {
 		this.totalCount = totalCount;
+	}
+
+	public int getIndexCount() {
+		return indexCount;
+	}
+
+	public void setIndexCount(int indexCount) {
+		this.indexCount = indexCount;
+	}
+
+	@Override
+	public String toString() {
+		return "Pager [page=" + page + ", pageNum=" + pageNum + ", pageStart=" + pageStart + ", pageEnd=" + pageEnd
+				+ ", prev=" + prev + ", next=" + next + ", currentPage=" + currentPage + ", totalCount=" + totalCount
+				+ "]";
 	}
 
 }

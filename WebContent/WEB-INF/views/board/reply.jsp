@@ -34,7 +34,7 @@
 						</tr>
 					</table>
 					<div class="bottom">
-						<a href="/mysite/board">취소</a>
+						<a href="/mysite/board?a=detail&no=${no }">취소</a>
 						<input type="submit" value="등록">
 					</div>
 				</form>				

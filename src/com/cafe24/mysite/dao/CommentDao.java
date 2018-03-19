@@ -13,7 +13,7 @@ import com.cafe24.mysite.vo.CommentVo;
 
 public class CommentDao {
 
-	public List<CommentVo> getList(int boardNo) {
+	public List<CommentVo> getList(Long boardNo) {
 		List<CommentVo> list = new ArrayList<>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -30,16 +30,17 @@ public class CommentDao {
 			sql.append("order by no asc ");
 			pstmt = conn.prepareStatement(sql.toString());
 
-			pstmt.setInt(1, boardNo);
+			pstmt.setLong(1, boardNo);
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
 				CommentVo vo = new CommentVo();
-				vo.setBoardNo(rs.getLong(1));
+				vo.setNo(rs.getLong(1));
 				vo.setContent(rs.getString(2));
-				vo.setUserNo(rs.getLong(3));
-				vo.setBoardNo(rs.getLong(4));
+				vo.setRegDate(rs.getString(3));
+				vo.setUser(new UserDao().getNo(rs.getLong(4)));
+				vo.setBoardNo(rs.getLong(5));
 
 				list.add(vo);
 			}
@@ -76,10 +77,11 @@ public class CommentDao {
 
 			if (rs.next()) {
 
-				vo.setBoardNo(rs.getLong(1));
+				vo.setNo(rs.getLong(1));
 				vo.setContent(rs.getString(2));
-				vo.setUserNo(rs.getLong(3));
-				vo.setBoardNo(rs.getLong(4));
+				vo.setRegDate(rs.getString(3));
+				vo.setUser(new UserDao().getNo(rs.getLong(4)));
+				vo.setBoardNo(rs.getLong(5));
 
 			}
 
@@ -137,7 +139,7 @@ public class CommentDao {
 			pstmt = conn.prepareStatement(sql.toString());
 
 			pstmt.setString(1, vo.getContent());
-			pstmt.setLong(2, vo.getUserNo());
+			pstmt.setLong(2, vo.getUser().getNo());
 			pstmt.setLong(3, vo.getBoardNo());
 
 			int count = pstmt.executeUpdate();

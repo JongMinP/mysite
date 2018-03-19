@@ -4,7 +4,8 @@ public class CommentVo {
 	private Long no;
 	private String content;
 	private String regDate;
-	private Long UserNo;
+	private UserVo user;
+
 	private Long boardNo;
 
 	public String getRegDate() {
@@ -31,14 +32,6 @@ public class CommentVo {
 		this.content = content;
 	}
 
-	public Long getUserNo() {
-		return UserNo;
-	}
-
-	public void setUserNo(Long userNo) {
-		UserNo = userNo;
-	}
-
 	public Long getBoardNo() {
 		return boardNo;
 	}
@@ -47,10 +40,18 @@ public class CommentVo {
 		this.boardNo = boardNo;
 	}
 
+	public UserVo getUser() {
+		return user;
+	}
+
+	public void setUser(UserVo user) {
+		this.user = user;
+	}
+
 	@Override
 	public String toString() {
-		return "CommentVo [no=" + no + ", content=" + content + ", regDate=" + regDate + ", UserNo=" + UserNo
-				+ ", boardNo=" + boardNo + "]";
+		return "CommentVo [no=" + no + ", content=" + content + ", regDate=" + regDate + ", user=" + user + ", boardNo="
+				+ boardNo + "]";
 	}
 
 }

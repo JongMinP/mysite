@@ -31,6 +31,11 @@ public class BoardActionFactory extends AbstractActionFactory {
 			action = new PagerAction();
 		} else if ("arrow".equals(actionName)) {
 			action = new ArrowAction();
+		} else if ("comment".equals(actionName)) {
+			action = new CommentAction();
+
+		} else if ("commentDelete".equals(actionName)) {
+			action = new CommentDeleteAction();
 		} else {
 			action = new ListAction();
 		}
