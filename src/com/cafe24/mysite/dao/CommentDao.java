@@ -123,6 +123,36 @@ public class CommentDao {
 		return result;
 
 	}
+	
+	public boolean boardDelete(int boardNo) {
+		boolean result = false;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		StringBuilder sql = new StringBuilder();
+
+		try {
+			conn = ConnectionFactroy.getInstance().createConnection();
+			sql.append("delete from comment ");
+			sql.append("where board_no = ? ");
+
+			pstmt = conn.prepareStatement(sql.toString());
+
+			pstmt.setInt(1, boardNo);
+
+			int count = pstmt.executeUpdate();
+
+			result = (count == 1);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			AutoClose.closeResource(pstmt, conn);
+		}
+
+		return result;
+
+	}
 
 	public boolean insert(CommentVo vo) {
 		boolean result = false;

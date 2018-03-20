@@ -352,6 +352,38 @@ public class BoardDao {
 		return result;
 
 	}
+	
+	
+	public boolean groupDelete(int groupNo, int orderNo) {
+		boolean result = false;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		StringBuilder sql = new StringBuilder();
+
+		try {
+			conn = ConnectionFactroy.getInstance().createConnection();
+			sql.append("delete from board ");
+			sql.append("where group_no = ? and order_no > ? ");
+
+			pstmt = conn.prepareStatement(sql.toString());
+
+			pstmt.setInt(1, groupNo);
+			pstmt.setInt(2, orderNo);
+
+			int count = pstmt.executeUpdate();
+
+			result = (count == 1);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			AutoClose.closeResource(pstmt, conn);
+		}
+
+		return result;
+
+	}
 
 	public BoardVo getBoard(int no) {
 

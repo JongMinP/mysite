@@ -46,7 +46,7 @@
 							<td>${board.count }</td>
 							<td>${board.regDate }</td>
 							<td><c:if test="${board.user.no eq authUser.no }">
-									<a href="/mysite/board?a=delete&no=${board.no }" class="del">삭제</a>
+									<a href="/mysite/board?a=delete&no=${board.no }&groupNo=${board.groupNo}&orderNo=${board.orderNo}" class="del">삭제</a>
 								</c:if></td>
 						</tr>
 					</c:forEach>
