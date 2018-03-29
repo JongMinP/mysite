@@ -10,7 +10,6 @@ import com.cafe24.mvc.action.Action;
 import com.cafe24.mvc.util.WebUtil;
 import com.cafe24.mysite.dao.BoardDao;
 import com.cafe24.mysite.dao.CommentDao;
-import com.cafe24.mysite.vo.BoardVo;
 
 public class DeleteAction implements Action {
 

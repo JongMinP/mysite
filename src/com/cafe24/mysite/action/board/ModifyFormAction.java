@@ -18,7 +18,7 @@ public class ModifyFormAction implements Action{
 		
 		String no = request.getParameter("no");
 		
-		BoardVo vo =new BoardDao().getBoard(Integer.parseInt(no));
+		BoardVo vo = new BoardDao().getBoard(Integer.parseInt(no));
 		
 		request.setAttribute("board", vo);
 		
